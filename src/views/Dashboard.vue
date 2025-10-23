@@ -49,14 +49,12 @@
         <el-col :span="6">
           <el-card class="stat-card">
             <div class="stat-content">
-              <div class="stat-content">
-                <div class="stat-icon">
-                  <el-icon><Timer /></el-icon>
-                </div>
-                <div class="stat-info">
-                  <div class="stat-value">{{ formatUptime(stats.uptime) }}</div>
-                  <div class="stat-label">运行时间</div>
-                </div>
+              <div class="stat-icon">
+                <el-icon><Timer /></el-icon>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value">{{ formatUptime(stats.uptime) }}</div>
+                <div class="stat-label">运行时间</div>
               </div>
             </div>
           </el-card>
