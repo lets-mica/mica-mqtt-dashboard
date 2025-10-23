@@ -27,7 +27,7 @@ export const useDebugStore = defineStore('debug', () => {
   const connection = ref<MqttConnection>({
     clientId: `debug_${Date.now()}`,
     host: 'localhost',
-    port: 1883,
+    port: 8083,
     clean: true,
     keepalive: 60
   })
