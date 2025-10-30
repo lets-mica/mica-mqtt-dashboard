@@ -63,7 +63,7 @@
               <span>订阅管理</span>
             </template>
             
-            <el-form :model="subscribeForm" @submit.prevent="handleSubscribe">
+            <el-form :model="subscribeForm" @submit.prevent="handleSubscribe" label-width="80px">
               <el-form-item label="主题">
                 <el-input
                   v-model="subscribeForm.topic"
@@ -108,7 +108,7 @@
               <span>消息发布</span>
             </template>
             
-            <el-form :model="publishForm" @submit.prevent="handlePublish">
+            <el-form :model="publishForm" @submit.prevent="handlePublish" label-width="80px">
               <el-form-item label="主题">
                 <el-input
                   v-model="publishForm.topic"
