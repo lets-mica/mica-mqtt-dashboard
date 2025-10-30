@@ -25,9 +25,9 @@ export interface MqttConnection {
 export const useDebugStore = defineStore('debug', () => {
   const messages = ref<MqttMessage[]>([])
   const connection = ref<MqttConnection>({
-    clientId: `debug_${Date.now()}`,
-    host: 'localhost',
-    port: 8083,
+    clientId: `${import.meta.env.VITE_MQTT_CLIENT_ID_PREFIX || 'debug_'}${Date.now()}`,
+    host: import.meta.env.VITE_MQTT_HOST || 'localhost',
+    port: Number(import.meta.env.VITE_MQTT_PORT) || 8083,
     clean: true,
     keepalive: 60
   })

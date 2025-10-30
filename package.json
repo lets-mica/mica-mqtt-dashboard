@@ -1,14 +1,35 @@
 {
   "name": "mica-mqtt-dashboard",
   "version": "1.0.0",
-  "description": "Mica MQTT Dashboard",
+  "private": true,
+  "description": "Mica MQTT 服务端管理界面",
   "type": "module",
+  "author": "如梦技术",
+  "license": "MIT",
+  "keywords": [
+    "mqtt",
+    "dashboard",
+    "mica",
+    "vue3",
+    "typescript",
+    "element-plus",
+    "mqtt-client",
+    "iot"
+  ],
+  "engines": {
+    "node": ">=16.0.0",
+    "pnpm": ">=8.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:prod": "vite build --mode production",
     "preview": "vite preview",
+    "serve": "vite preview --port 4173",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "type-check": "vue-tsc --noEmit"
+    "lint:check": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore",
+    "type-check": "vue-tsc --noEmit",
+    "format": "prettier --write \"src/**/*.{js,ts,vue,json,css,scss,md}\""
   },
   "dependencies": {
     "vue": "^3.4.0",
@@ -23,16 +44,17 @@
     "vue-echarts": "^6.6.1"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.5.2",
-    "vite": "^5.0.8",
-    "typescript": "^5.2.2",
-    "vue-tsc": "^1.8.25",
     "@types/node": "^20.10.4",
-    "eslint": "^8.55.0",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",
+    "@vitejs/plugin-vue": "^4.5.2",
+    "eslint": "^8.55.0",
     "eslint-plugin-vue": "^9.19.2",
+    "prettier": "^3.1.0",
+    "typescript": "^5.2.2",
     "unplugin-auto-import": "^0.17.2",
-    "unplugin-vue-components": "^0.26.0"
+    "unplugin-vue-components": "^0.26.0",
+    "vite": "^5.0.8",
+    "vue-tsc": "^1.8.25"
   }
 }

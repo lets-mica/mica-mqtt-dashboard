@@ -59,6 +59,26 @@
 pnpm install
 ```
 
+### 环境配置
+
+复制 `.env.example` 文件为 `.env.development`：
+
+```bash
+cp .env.example .env.development
+```
+
+修改配置项：
+
+```env
+# API 配置
+VITE_API_BASE_URL=http://localhost:18083
+
+# MQTT 连接配置
+VITE_MQTT_HOST=localhost
+VITE_MQTT_PORT=8083
+VITE_MQTT_CLIENT_ID_PREFIX=mica_web_
+```
+
 ### 开发环境
 
 ```bash
@@ -81,11 +101,20 @@ pnpm preview
 
 ## 配置说明
 
-### API 代理配置
+### 环境变量
 
-项目已配置 API 代理，默认将 `/api` 请求代理到 `http://localhost:18083`。
+项目支持通过环境变量配置连接参数：
 
-如需修改代理地址，请编辑 `vite.config.ts` 文件：
+| 变量名 | 说明 | 默认值 |
+|--------|------|--------|
+| `VITE_API_BASE_URL` | API 服务器地址 | `http://localhost:18083` |
+| `VITE_MQTT_HOST` | MQTT WebSocket 主机 | `localhost` |
+| `VITE_MQTT_PORT` | MQTT WebSocket 端口 | `8083` |
+| `VITE_MQTT_CLIENT_ID_PREFIX` | MQTT 客户端ID前缀 | `mica_web_` |
+
+### API 代理配置（开发环境）
+
+开发环境下，Vite 会自动代理 API 请求。如需修改代理地址，请编辑 `vite.config.ts` 文件：
 
 ```typescript
 server: {
@@ -100,14 +129,7 @@ server: {
 
 ### 认证配置
 
-默认使用用户名 `mica` 和密码 `mica` 进行 HTTP API 认证。
-
-如需修改认证信息，可以在浏览器控制台执行：
-
-```javascript
-localStorage.setItem('mqtt_username', 'your-username')
-localStorage.setItem('mqtt_password', 'your-password')
-```
+通过登录页面输入用户名和密码即可进行认证。认证信息会保存在浏览器的 `localStorage` 中。
 
 ## 项目结构
 
