@@ -22,8 +22,12 @@ export const formatFileSize = (bytes: number) => {
 }
 
 // 格式化数字
-export const formatNumber = (num: number) => {
-  return num.toLocaleString()
+export const formatNumber = (num: number | undefined) => {
+  if (num === undefined || num === null) {
+    return '0'
+  } else {
+    return num.toLocaleString()
+  }
 }
 
 // 格式化百分比
