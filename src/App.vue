@@ -23,4 +23,14 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
+
+/* 暗色模式平滑过渡 */
+html.dark {
+  color-scheme: dark;
+}
+
+/* 为所有元素添加平滑过渡效果 */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
 </style>

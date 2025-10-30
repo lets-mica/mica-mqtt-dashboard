@@ -90,6 +90,7 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { House, User, Monitor, Tools, Fold, Expand, Sunny, Moon, ArrowDown, SwitchButton } from '@element-plus/icons-vue'
@@ -100,7 +101,12 @@ const router = useRouter()
 const appStore = useAppStore()
 const authStore = useAuthStore()
 
-const { sidebarCollapsed, theme, toggleSidebar, toggleTheme } = appStore
+const { sidebarCollapsed, theme, toggleSidebar, toggleTheme, initTheme } = appStore
+
+// 初始化主题
+onMounted(() => {
+  initTheme()
+})
 
 const handleCommand = async (command: string) => {
   if (command === 'logout') {

@@ -6,13 +6,37 @@ export const useAppStore = defineStore('app', () => {
   const theme = ref<'light' | 'dark'>('light')
   const sidebarCollapsed = ref(false)
 
+  // 初始化主题
+  const initTheme = () => {
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null
+    if (savedTheme) {
+      theme.value = savedTheme
+      applyTheme(savedTheme)
+    } else {
+      // 检测系统主题偏好
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      theme.value = prefersDark ? 'dark' : 'light'
+      applyTheme(theme.value)
+    }
+  }
+
+  // 应用主题
+  const applyTheme = (themeValue: 'light' | 'dark') => {
+    if (themeValue === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  }
+
   const setLoading = (value: boolean) => {
     loading.value = value
   }
 
   const toggleTheme = () => {
     theme.value = theme.value === 'light' ? 'dark' : 'light'
-    document.documentElement.setAttribute('data-theme', theme.value)
+    applyTheme(theme.value)
+    localStorage.setItem('theme', theme.value)
   }
 
   const toggleSidebar = () => {
@@ -25,6 +49,7 @@ export const useAppStore = defineStore('app', () => {
     sidebarCollapsed,
     setLoading,
     toggleTheme,
-    toggleSidebar
+    toggleSidebar,
+    initTheme
   }
 })
