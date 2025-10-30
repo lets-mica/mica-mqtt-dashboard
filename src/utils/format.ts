@@ -1,4 +1,7 @@
 import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+dayjs.extend(relativeTime)
 
 // 格式化时间
 export const formatTime = (timestamp: number) => {

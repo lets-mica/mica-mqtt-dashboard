@@ -140,7 +140,7 @@
               
               <el-form-item>
                 <el-button type="primary" @click="handlePublish" :disabled="!connected">
-                  <el-icon><Send /></el-icon>
+                  <el-icon><Promotion /></el-icon>
                   发布
                 </el-button>
               </el-form-item>
@@ -226,11 +226,14 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
 import { ElMessage } from 'element-plus'
+import { Connection, Close, Delete, Plus, Promotion } from '@element-plus/icons-vue'
+import { storeToRefs } from 'pinia'
 import { useDebugStore } from '@/stores/debug'
 import { formatTime } from '@/utils/format'
 
 const debugStore = useDebugStore()
 
+// 使用 storeToRefs 解构响应式状态
 const {
   connection,
   connected,
@@ -239,7 +242,11 @@ const {
   messages,
   maxMessages,
   filteredMessages,
-  messageFilter,
+  messageFilter
+} = storeToRefs(debugStore)
+
+// 直接解构方法
+const {
   connect,
   disconnect,
   subscribe,

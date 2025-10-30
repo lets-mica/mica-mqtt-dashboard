@@ -126,6 +126,8 @@
 
 <script setup lang="ts">
 import { onMounted, computed } from 'vue'
+import { storeToRefs } from 'pinia'
+import { User, Message, Connection, Timer } from '@element-plus/icons-vue'
 import { useMonitorStore } from '@/stores/monitor'
 import { useClientStore } from '@/stores/client'
 import { formatNumber, formatTime } from '@/utils/format'
@@ -133,12 +135,13 @@ import { formatNumber, formatTime } from '@/utils/format'
 const monitorStore = useMonitorStore()
 const clientStore = useClientStore()
 
-const { stats, loading } = monitorStore
-const { clients } = clientStore
+// 使用 storeToRefs 解构响应式状态
+const { stats, loading } = storeToRefs(monitorStore)
+const { clients } = storeToRefs(clientStore)
 
 // 最近连接的客户端（取前5个）
 const recentClients = computed(() => {
-  return clients
+  return clients.value
     .filter(client => client.connected)
     .sort((a, b) => b.connectedAt - a.connectedAt)
     .slice(0, 5)

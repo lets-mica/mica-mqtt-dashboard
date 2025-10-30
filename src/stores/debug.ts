@@ -43,50 +43,65 @@ export const useDebugStore = defineStore('debug', () => {
     if (connecting.value || connected.value) return
     
     connecting.value = true
-    try {
-      const client = mqtt.connect({
-        host: connection.value.host,
-        port: connection.value.port,
-        clientId: connection.value.clientId,
-        username: connection.value.username,
-        password: connection.value.password,
-        clean: connection.value.clean,
-        keepalive: connection.value.keepalive
-      })
-
-      client.on('connect', () => {
-        connected.value = true
-        connecting.value = false
-        mqttClient.value = client
-      })
-
-      client.on('message', (topic, payload, packet) => {
-        addMessage({
-          id: `msg_${Date.now()}_${Math.random()}`,
-          timestamp: Date.now(),
-          topic,
-          payload: payload.toString(),
-          qos: packet.qos,
-          retain: packet.retain,
-          direction: 'in'
+    
+    return new Promise<void>((resolve, reject) => {
+      try {
+        const client = mqtt.connect({
+          host: connection.value.host,
+          port: connection.value.port,
+          clientId: connection.value.clientId,
+          username: connection.value.username,
+          password: connection.value.password,
+          clean: connection.value.clean,
+          keepalive: connection.value.keepalive
         })
-      })
 
-      client.on('error', (error) => {
-        console.error('MQTT连接错误:', error)
+        // 连接超时处理
+        const timeout = setTimeout(() => {
+          connecting.value = false
+          connected.value = false
+          reject(new Error('连接超时'))
+        }, 10000) // 10秒超时
+
+        client.on('connect', () => {
+          clearTimeout(timeout)
+          connected.value = true
+          connecting.value = false
+          mqttClient.value = client
+          resolve()
+        })
+
+        client.on('message', (topic, payload, packet) => {
+          addMessage({
+            id: `msg_${Date.now()}_${Math.random()}`,
+            timestamp: Date.now(),
+            topic,
+            payload: payload.toString(),
+            qos: packet.qos,
+            retain: packet.retain,
+            direction: 'in'
+          })
+        })
+
+        client.on('error', (error) => {
+          clearTimeout(timeout)
+          console.error('MQTT连接错误:', error)
+          connecting.value = false
+          connected.value = false
+          reject(error)
+        })
+
+        client.on('close', () => {
+          connected.value = false
+          mqttClient.value = null
+        })
+
+      } catch (error) {
+        console.error('MQTT连接失败:', error)
         connecting.value = false
-        connected.value = false
-      })
-
-      client.on('close', () => {
-        connected.value = false
-        mqttClient.value = null
-      })
-
-    } catch (error) {
-      console.error('MQTT连接失败:', error)
-      connecting.value = false
-    }
+        reject(error)
+      }
+    })
   }
 
   // 断开连接

@@ -145,6 +145,8 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import { ArrowLeft, Plus } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useClientStore } from '@/stores/client'
 import { formatTime } from '@/utils/format'
@@ -152,7 +154,11 @@ import { formatTime } from '@/utils/format'
 const route = useRoute()
 const clientStore = useClientStore()
 
-const { currentClient, loading, fetchClientDetail, kickClient, proxySubscribe, proxyUnsubscribe } = clientStore
+// 使用 storeToRefs 解构响应式状态
+const { currentClient, loading } = storeToRefs(clientStore)
+
+// 直接解构方法
+const { fetchClientDetail, kickClient, proxySubscribe, proxyUnsubscribe } = clientStore
 
 const clientId = computed(() => route.params.clientId as string)
 

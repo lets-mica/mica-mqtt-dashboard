@@ -118,6 +118,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import { Refresh, Search, RefreshLeft } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useClientStore } from '@/stores/client'
 import { formatTime } from '@/utils/format'
@@ -125,7 +127,11 @@ import { formatTime } from '@/utils/format'
 const router = useRouter()
 const clientStore = useClientStore()
 
-const { clients, loading, pagination, fetchClients, kickClient: storeKickClient } = clientStore
+// 使用 storeToRefs 解构响应式状态
+const { clients, loading, pagination } = storeToRefs(clientStore)
+
+// 直接解构方法
+const { fetchClients, kickClient: storeKickClient } = clientStore
 
 // 搜索表单
 const searchForm = ref({
@@ -136,7 +142,7 @@ const searchForm = ref({
 
 // 过滤后的客户端列表
 const filteredClients = computed(() => {
-  let filtered = clients
+  let filtered = clients.value
 
   if (searchForm.value.clientId) {
     filtered = filtered.filter(client =>
@@ -173,7 +179,7 @@ const resetSearch = () => {
 
 // 刷新客户端列表
 const refreshClients = async () => {
-  await fetchClients(pagination.page, pagination.pageSize)
+  await fetchClients(pagination.value.page, pagination.value.pageSize)
 }
 
 // 查看客户端详情
@@ -213,13 +219,13 @@ const handleRowClick = (row: any) => {
 
 // 分页大小改变
 const handleSizeChange = (size: number) => {
-  pagination.pageSize = size
+  pagination.value.pageSize = size
   fetchClients(1, size)
 }
 
 // 当前页改变
 const handleCurrentChange = (page: number) => {
-  fetchClients(page, pagination.pageSize)
+  fetchClients(page, pagination.value.pageSize)
 }
 
 onMounted(() => {
