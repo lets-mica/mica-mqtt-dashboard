@@ -61,15 +61,6 @@
           </el-button>
         </el-form-item>
       </el-form>
-
-      <div class="login-tips">
-        <el-alert
-          title="默认账号密码均为: mica"
-          type="info"
-          :closable="false"
-          show-icon
-        />
-      </div>
     </div>
   </div>
 </template>
