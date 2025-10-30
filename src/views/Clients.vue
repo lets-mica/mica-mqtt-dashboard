@@ -60,16 +60,16 @@
           @row-click="handleRowClick"
           style="cursor: pointer"
         >
-          <el-table-column prop="clientId" label="客户端ID" width="200" />
-          <el-table-column prop="username" label="用户名" width="150" />
-          <el-table-column prop="ipAddress" label="IP地址" width="100" />
+          <el-table-column prop="clientId" label="客户端ID" width="220" />
+          <el-table-column prop="username" label="用户名" width="160" />
+          <el-table-column prop="ipAddress" label="IP地址" width="120" />
           <el-table-column prop="port" label="端口" width="80" />
           <el-table-column prop="keepAlive" label="keepAlive" width="90">
             <template #default="{ row }">
               {{ row.keepAlive }}s
             </template>
           </el-table-column>
-          <el-table-column prop="protoFullName" label="协议" width="90" />
+          <el-table-column prop="protoFullName" label="协议" width="100" />
           <el-table-column prop="connected" label="状态" width="80">
             <template #default="{ row }">
               <el-tag :type="row.connected ? 'success' : 'danger'">
@@ -82,7 +82,7 @@
               {{ formatTime(row.connectedAt) }}
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="200" fixed="right">
+          <el-table-column label="操作" width="180" fixed="right">
             <template #default="{ row }">
               <el-button
                 type="primary"
