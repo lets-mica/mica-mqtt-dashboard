@@ -8,8 +8,6 @@
 - 实时显示服务器统计信息
 - 在线客户端数量
 - 总消息数和订阅数
-- 系统运行时间
-- 系统资源使用情况（内存、CPU）
 - 最近连接的客户端列表
 
 ### 👥 客户端管理
@@ -22,7 +20,6 @@
 ### 📊 状态监控
 - 实时系统监控
 - 客户端连接数趋势图
-- 系统资源使用趋势
 - 可配置的监控数据保留
 - 实时数据更新
 
@@ -61,17 +58,11 @@ pnpm install
 
 ### 环境配置
 
-复制 `.env.example` 文件为 `.env.development`：
-
-```bash
-cp .env.example .env.development
-```
-
 修改配置项：
 
 ```env
 # API 配置
-VITE_API_BASE_URL=http://localhost:18083
+VITE_API_BASE_URL=
 
 # MQTT 连接配置
 VITE_MQTT_HOST=localhost
