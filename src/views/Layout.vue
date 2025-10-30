@@ -62,6 +62,22 @@
           >
             <el-icon><Sunny v-if="theme === 'light'" /><Moon v-else /></el-icon>
           </el-button>
+
+          <el-dropdown @command="handleCommand">
+            <div class="user-info">
+              <el-icon><User /></el-icon>
+              <span>{{ authStore.username }}</span>
+              <el-icon class="arrow-down"><ArrowDown /></el-icon>
+            </div>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item command="logout">
+                  <el-icon><SwitchButton /></el-icon>
+                  退出登录
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </div>
       </el-header>
 
@@ -74,10 +90,39 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
+import { ElMessageBox, ElMessage } from 'element-plus'
+import { House, User, Monitor, Tools, Fold, Expand, Sunny, Moon, ArrowDown, SwitchButton } from '@element-plus/icons-vue'
 import { useAppStore } from '@/stores/app'
+import { useAuthStore } from '@/stores/auth'
 
+const router = useRouter()
 const appStore = useAppStore()
+const authStore = useAuthStore()
+
 const { sidebarCollapsed, theme, toggleSidebar, toggleTheme } = appStore
+
+const handleCommand = async (command: string) => {
+  if (command === 'logout') {
+    try {
+      await ElMessageBox.confirm(
+        '确定要退出登录吗？',
+        '退出确认',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      )
+
+      authStore.logout()
+      ElMessage.success('已退出登录')
+      router.push('/login')
+    } catch {
+      // 用户取消
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -125,12 +170,36 @@ const { sidebarCollapsed, theme, toggleSidebar, toggleTheme } = appStore
   gap: 16px;
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .sidebar-toggle {
   font-size: 18px;
 }
 
 .theme-toggle {
   font-size: 18px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.user-info:hover {
+  background-color: var(--el-fill-color-light);
+}
+
+.arrow-down {
+  font-size: 12px;
 }
 
 .main-content {
