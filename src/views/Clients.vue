@@ -62,9 +62,15 @@
         >
           <el-table-column prop="clientId" label="客户端ID" width="200" />
           <el-table-column prop="username" label="用户名" width="150" />
-          <el-table-column prop="ipAddress" label="IP地址" width="120" />
+          <el-table-column prop="ipAddress" label="IP地址" width="100" />
           <el-table-column prop="port" label="端口" width="80" />
-          <el-table-column prop="connected" label="状态" width="100">
+          <el-table-column prop="keepAlive" label="keepAlive" width="90">
+            <template #default="{ row }">
+              {{ row.keepAlive }}s
+            </template>
+          </el-table-column>
+          <el-table-column prop="protoFullName" label="协议" width="90" />
+          <el-table-column prop="connected" label="状态" width="80">
             <template #default="{ row }">
               <el-tag :type="row.connected ? 'success' : 'danger'">
                 {{ row.connected ? '在线' : '离线' }}
@@ -76,8 +82,6 @@
               {{ formatTime(row.connectedAt) }}
             </template>
           </el-table-column>
-          <el-table-column prop="protoName" label="协议" width="80" />
-          <el-table-column prop="protoVer" label="版本" width="80" />
           <el-table-column label="操作" width="200" fixed="right">
             <template #default="{ row }">
               <el-button

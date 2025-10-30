@@ -5,13 +5,18 @@ import { api } from '@/utils/api'
 export interface Client {
   clientId: string
   username?: string
+  keepAlive?: number
   connected: boolean
-  createdAt: number
-  connectedAt: number
-  ipAddress?: string
-  port?: number
   protoName?: string
   protoVer?: number
+  protoFullName?: string
+  ipAddress?: string
+  port?: number
+  createdAt: number
+  connectedAt: number
+  decodeQueueSize?: number
+  handlerQueueSize?: number
+  sendQueueSize?: number
 }
 
 export interface ClientDetail extends Client {

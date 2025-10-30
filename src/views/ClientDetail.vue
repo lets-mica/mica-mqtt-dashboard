@@ -37,10 +37,19 @@
                   {{ currentClient?.port || 'N/A' }}
                 </el-descriptions-item>
                 <el-descriptions-item label="协议">
-                  {{ currentClient?.protoName || 'N/A' }}
+                  {{ currentClient?.protoFullName || 'N/A' }}
                 </el-descriptions-item>
-                <el-descriptions-item label="协议版本">
-                  {{ currentClient?.protoVer || 'N/A' }}
+                <el-descriptions-item label="keepAlive">
+                  {{ currentClient?.keepAlive || 'N/A' }}s
+                </el-descriptions-item>
+                <el-descriptions-item label="解码队列大小">
+                  {{ currentClient?.decodeQueueSize || 'N/A' }}
+                </el-descriptions-item>
+                <el-descriptions-item label="处理队列大小">
+                  {{ currentClient?.handlerQueueSize || 'N/A' }}
+                </el-descriptions-item>
+                <el-descriptions-item label="发送队列大小">
+                  {{ currentClient?.sendQueueSize || 'N/A' }}
                 </el-descriptions-item>
                 <el-descriptions-item label="连接时间">
                   {{ currentClient?.connectedAt ? formatTime(currentClient.connectedAt) : 'N/A' }}
