@@ -2,93 +2,153 @@
   <div class="dashboard">
       <h1>仪表盘</h1>
       
-      <!-- 统计卡片 -->
+      <!-- 节点统计 -->
+      <div class="section-title">节点统计</div>
       <el-row :gutter="20" class="stats-cards">
-        <el-col :span="6">
+        <el-col :span="8">
           <el-card class="stat-card">
             <div class="stat-content">
-              <div class="stat-icon">
-                <el-icon><User /></el-icon>
-              </div>
-              <div class="stat-info">
-                <div class="stat-value">{{ stats.connectedClients }}</div>
-                <div class="stat-label">在线客户端</div>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-        
-        <el-col :span="6">
-          <el-card class="stat-card">
-            <div class="stat-content">
-              <div class="stat-icon">
-                <el-icon><Message /></el-icon>
-              </div>
-              <div class="stat-info">
-                <div class="stat-value">{{ formatNumber(stats.totalMessages) }}</div>
-                <div class="stat-label">总消息数</div>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-        
-        <el-col :span="6">
-          <el-card class="stat-card">
-            <div class="stat-content">
-              <div class="stat-icon">
+              <div class="stat-icon" style="color: #409EFF">
                 <el-icon><Connection /></el-icon>
               </div>
               <div class="stat-info">
-                <div class="stat-value">{{ formatNumber(stats.totalSubscriptions) }}</div>
-                <div class="stat-label">总订阅数</div>
+                <div class="stat-value">{{ stats.nodes?.clientNodes || 0 }}</div>
+                <div class="stat-label">客户端节点</div>
               </div>
             </div>
           </el-card>
         </el-col>
         
-        <el-col :span="6">
+        <el-col :span="8">
           <el-card class="stat-card">
             <div class="stat-content">
-              <div class="stat-icon">
-                <el-icon><Timer /></el-icon>
+              <div class="stat-icon" style="color: #67C23A">
+                <el-icon><Link /></el-icon>
               </div>
               <div class="stat-info">
-                <div class="stat-value">{{ formatUptime(stats.uptime) }}</div>
-                <div class="stat-label">运行时间</div>
+                <div class="stat-value">{{ stats.nodes?.connections || 0 }}</div>
+                <div class="stat-label">总连接数</div>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+        
+        <el-col :span="8">
+          <el-card class="stat-card">
+            <div class="stat-content">
+              <div class="stat-icon" style="color: #E6A23C">
+                <el-icon><User /></el-icon>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value">{{ stats.nodes?.users || 0 }}</div>
+                <div class="stat-label">用户数</div>
               </div>
             </div>
           </el-card>
         </el-col>
       </el-row>
 
-      <!-- 系统资源使用情况 -->
-      <el-row :gutter="20" class="resource-charts">
-        <el-col :span="12">
-          <el-card>
-            <template #header>
-              <span>内存使用率</span>
-            </template>
-            <div class="chart-container">
-              <el-progress
-                :percentage="stats.memoryUsage"
-                :color="getProgressColor(stats.memoryUsage)"
-                :stroke-width="20"
-              />
+      <!-- 连接统计 -->
+      <div class="section-title">连接统计</div>
+      <el-row :gutter="20" class="stats-cards">
+        <el-col :span="8">
+          <el-card class="stat-card">
+            <div class="stat-content">
+              <div class="stat-icon" style="color: #67C23A">
+                <el-icon><CircleCheck /></el-icon>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value">{{ formatNumber(stats.connections?.accepted) }}</div>
+                <div class="stat-label">已接受连接</div>
+              </div>
             </div>
           </el-card>
         </el-col>
         
-        <el-col :span="12">
-          <el-card>
-            <template #header>
-              <span>CPU 使用率</span>
-            </template>
-            <div class="chart-container">
-              <el-progress
-                :percentage="stats.cpuUsage"
-                :color="getProgressColor(stats.cpuUsage)"
-                :stroke-width="20"
-              />
+        <el-col :span="8">
+          <el-card class="stat-card">
+            <div class="stat-content">
+              <div class="stat-icon" style="color: #409EFF">
+                <el-icon><Connection /></el-icon>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value">{{ formatNumber(stats.connections?.size) }}</div>
+                <div class="stat-label">当前连接数</div>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+        
+        <el-col :span="8">
+          <el-card class="stat-card">
+            <div class="stat-content">
+              <div class="stat-icon" style="color: #909399">
+                <el-icon><CircleClose /></el-icon>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value">{{ formatNumber(stats.connections?.closed) }}</div>
+                <div class="stat-label">已关闭连接</div>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+
+      <!-- 消息统计 -->
+      <div class="section-title">消息统计</div>
+      <el-row :gutter="20" class="stats-cards">
+        <el-col :span="6">
+          <el-card class="stat-card">
+            <div class="stat-content">
+              <div class="stat-icon" style="color: #67C23A">
+                <el-icon><Download /></el-icon>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value">{{ formatNumber(stats.messages?.receivedPackets) }}</div>
+                <div class="stat-label">接收数据包</div>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+        
+        <el-col :span="6">
+          <el-card class="stat-card">
+            <div class="stat-content">
+              <div class="stat-icon" style="color: #409EFF">
+                <el-icon><Upload /></el-icon>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value">{{ formatNumber(stats.messages?.sendPackets) }}</div>
+                <div class="stat-label">发送数据包</div>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+        
+        <el-col :span="6">
+          <el-card class="stat-card">
+            <div class="stat-content">
+              <div class="stat-icon" style="color: #67C23A">
+                <el-icon><FolderOpened /></el-icon>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value">{{ formatBytes(stats.messages?.receivedBytes) }}</div>
+                <div class="stat-label">接收字节</div>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+        
+        <el-col :span="6">
+          <el-card class="stat-card">
+            <div class="stat-content">
+              <div class="stat-icon" style="color: #409EFF">
+                <el-icon><Folder /></el-icon>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value">{{ formatBytes(stats.messages?.sendBytes) }}</div>
+                <div class="stat-label">发送字节</div>
+              </div>
             </div>
           </el-card>
         </el-col>
@@ -127,10 +187,20 @@
 <script setup lang="ts">
 import { onMounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import { User, Message, Connection, Timer } from '@element-plus/icons-vue'
+import { 
+  User, 
+  Connection, 
+  Link, 
+  CircleCheck, 
+  CircleClose, 
+  Download, 
+  Upload, 
+  FolderOpened, 
+  Folder 
+} from '@element-plus/icons-vue'
 import { useMonitorStore } from '@/stores/monitor'
 import { useClientStore } from '@/stores/client'
-import { formatNumber, formatTime } from '@/utils/format'
+import { formatNumber, formatTime, formatFileSize } from '@/utils/format'
 
 const monitorStore = useMonitorStore()
 const clientStore = useClientStore()
@@ -147,26 +217,10 @@ const recentClients = computed(() => {
     .slice(0, 5)
 })
 
-// 格式化运行时间
-const formatUptime = (seconds: number) => {
-  const days = Math.floor(seconds / 86400)
-  const hours = Math.floor((seconds % 86400) / 3600)
-  const minutes = Math.floor((seconds % 3600) / 60)
-  
-  if (days > 0) {
-    return `${days}天 ${hours}小时`
-  } else if (hours > 0) {
-    return `${hours}小时 ${minutes}分钟`
-  } else {
-    return `${minutes}分钟`
-  }
-}
-
-// 获取进度条颜色
-const getProgressColor = (percentage: number) => {
-  if (percentage < 50) return '#67c23a'
-  if (percentage < 80) return '#e6a23c'
-  return '#f56c6c'
+// 格式化字节数
+const formatBytes = (bytes: number | undefined) => {
+  if (bytes === undefined || bytes === null) return '0 B'
+  return formatFileSize(bytes)
 }
 
 onMounted(async () => {
@@ -181,6 +235,15 @@ onMounted(async () => {
 .dashboard {
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--el-text-color-primary);
+  margin: 24px 0 16px 0;
+  padding-left: 12px;
+  border-left: 4px solid var(--el-color-primary);
 }
 
 .stats-cards {

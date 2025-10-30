@@ -24,39 +24,11 @@
           <el-card class="stat-card">
             <div class="stat-content">
               <div class="stat-icon">
-                <el-icon><User /></el-icon>
-              </div>
-              <div class="stat-info">
-                <div class="stat-value">{{ stats.connectedClients }}</div>
-                <div class="stat-label">在线客户端</div>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-        
-        <el-col :span="6">
-          <el-card class="stat-card">
-            <div class="stat-content">
-              <div class="stat-icon">
-                <el-icon><Message /></el-icon>
-              </div>
-              <div class="stat-info">
-                <div class="stat-value">{{ formatNumber(stats.totalMessages) }}</div>
-                <div class="stat-label">总消息数</div>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-        
-        <el-col :span="6">
-          <el-card class="stat-card">
-            <div class="stat-content">
-              <div class="stat-icon">
                 <el-icon><Connection /></el-icon>
               </div>
               <div class="stat-info">
-                <div class="stat-value">{{ formatNumber(stats.totalSubscriptions) }}</div>
-                <div class="stat-label">总订阅数</div>
+                <div class="stat-value">{{ stats.connections?.size || 0 }}</div>
+                <div class="stat-label">当前连接数</div>
               </div>
             </div>
           </el-card>
@@ -66,47 +38,40 @@
           <el-card class="stat-card">
             <div class="stat-content">
               <div class="stat-icon">
-                <el-icon><Timer /></el-icon>
+                <el-icon><Download /></el-icon>
               </div>
               <div class="stat-info">
-                <div class="stat-value">{{ formatUptime(stats.uptime) }}</div>
-                <div class="stat-label">运行时间</div>
+                <div class="stat-value">{{ formatNumber(stats.messages?.receivedPackets) }}</div>
+                <div class="stat-label">接收数据包</div>
               </div>
-            </div>
-          </el-card>
-        </el-col>
-      </el-row>
-
-      <!-- 系统资源监控 -->
-      <el-row :gutter="20" class="resource-row">
-        <el-col :span="12">
-          <el-card>
-            <template #header>
-              <span>内存使用率</span>
-            </template>
-            <div class="resource-chart">
-              <el-progress
-                :percentage="stats.memoryUsage"
-                :color="getProgressColor(stats.memoryUsage)"
-                :stroke-width="20"
-              />
-              <div class="resource-value">{{ stats.memoryUsage }}%</div>
             </div>
           </el-card>
         </el-col>
         
-        <el-col :span="12">
-          <el-card>
-            <template #header>
-              <span>CPU 使用率</span>
-            </template>
-            <div class="resource-chart">
-              <el-progress
-                :percentage="stats.cpuUsage"
-                :color="getProgressColor(stats.cpuUsage)"
-                :stroke-width="20"
-              />
-              <div class="resource-value">{{ stats.cpuUsage }}%</div>
+        <el-col :span="6">
+          <el-card class="stat-card">
+            <div class="stat-content">
+              <div class="stat-icon">
+                <el-icon><Upload /></el-icon>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value">{{ formatNumber(stats.messages?.sendPackets) }}</div>
+                <div class="stat-label">发送数据包</div>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+        
+        <el-col :span="6">
+          <el-card class="stat-card">
+            <div class="stat-content">
+              <div class="stat-icon">
+                <el-icon><User /></el-icon>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value">{{ stats.nodes?.users || 0 }}</div>
+                <div class="stat-label">用户数</div>
+              </div>
             </div>
           </el-card>
         </el-col>
@@ -117,11 +82,11 @@
         <el-col :span="12">
           <el-card>
             <template #header>
-              <span>客户端连接数趋势</span>
+              <span>连接数趋势</span>
             </template>
             <div class="chart-container">
               <v-chart
-                :option="clientsChartOption"
+                :option="connectionsChartOption"
                 style="height: 300px;"
                 v-if="monitorData.length > 0"
               />
@@ -133,11 +98,11 @@
         <el-col :span="12">
           <el-card>
             <template #header>
-              <span>系统资源使用趋势</span>
+              <span>消息流量趋势</span>
             </template>
             <div class="chart-container">
               <v-chart
-                :option="resourceChartOption"
+                :option="messagesChartOption"
                 style="height: 300px;"
                 v-if="monitorData.length > 0"
               />
@@ -159,20 +124,17 @@
               {{ formatTime(row.timestamp) }}
             </template>
           </el-table-column>
-          <el-table-column prop="connectedClients" label="连接数" width="100" />
-          <el-table-column prop="messagesPerSecond" label="消息/秒" width="120" />
-          <el-table-column prop="memoryUsage" label="内存使用率" width="120">
+          <el-table-column prop="connections" label="连接数" width="100" />
+          <el-table-column prop="messagesReceived" label="接收数据包" width="120" />
+          <el-table-column prop="messagesSent" label="发送数据包" width="120" />
+          <el-table-column prop="bytesReceived" label="接收字节" width="120">
             <template #default="{ row }">
-              <el-tag :type="getResourceTagType(row.memoryUsage)">
-                {{ row.memoryUsage }}%
-              </el-tag>
+              {{ formatFileSize(row.bytesReceived) }}
             </template>
           </el-table-column>
-          <el-table-column prop="cpuUsage" label="CPU使用率" width="120">
+          <el-table-column prop="bytesSent" label="发送字节" width="120">
             <template #default="{ row }">
-              <el-tag :type="getResourceTagType(row.cpuUsage)">
-                {{ row.cpuUsage }}%
-              </el-tag>
+              {{ formatFileSize(row.bytesSent) }}
             </template>
           </el-table-column>
         </el-table>
@@ -193,9 +155,9 @@ import {
 } from 'echarts/components'
 import VChart from 'vue-echarts'
 import { storeToRefs } from 'pinia'
-import { VideoPlay, VideoPause, Delete, User, Message, Connection, Timer } from '@element-plus/icons-vue'
+import { VideoPlay, VideoPause, Delete, User, Connection, Download, Upload } from '@element-plus/icons-vue'
 import { useMonitorStore } from '@/stores/monitor'
-import { formatNumber, formatTime } from '@/utils/format'
+import { formatNumber, formatTime, formatFileSize } from '@/utils/format'
 
 // 注册 ECharts 组件
 use([
@@ -215,35 +177,6 @@ const { stats, monitorData, loading, realtimeEnabled } = storeToRefs(monitorStor
 // 直接解构方法
 const { fetchStats, startRealtimeMonitor, stopRealtimeMonitor, clearMonitorData } = monitorStore
 
-// 格式化运行时间
-const formatUptime = (seconds: number) => {
-  const days = Math.floor(seconds / 86400)
-  const hours = Math.floor((seconds % 86400) / 3600)
-  const minutes = Math.floor((seconds % 3600) / 60)
-  
-  if (days > 0) {
-    return `${days}天 ${hours}小时`
-  } else if (hours > 0) {
-    return `${hours}小时 ${minutes}分钟`
-  } else {
-    return `${minutes}分钟`
-  }
-}
-
-// 获取进度条颜色
-const getProgressColor = (percentage: number) => {
-  if (percentage < 50) return '#67c23a'
-  if (percentage < 80) return '#e6a23c'
-  return '#f56c6c'
-}
-
-// 获取资源标签类型
-const getResourceTagType = (percentage: number) => {
-  if (percentage < 50) return 'success'
-  if (percentage < 80) return 'warning'
-  return 'danger'
-}
-
 // 切换实时监控
 const toggleRealtimeMonitor = () => {
   if (realtimeEnabled.value) {
@@ -253,21 +186,25 @@ const toggleRealtimeMonitor = () => {
   }
 }
 
-// 客户端连接数图表配置
-const clientsChartOption = computed(() => {
+// 连接数图表配置
+const connectionsChartOption = computed(() => {
   const times = monitorData.value.map(item => formatTime(item.timestamp))
-  const clients = monitorData.value.map(item => item.connectedClients)
+  const connections = monitorData.value.map(item => item.connections)
   
   return {
-    title: {
-      text: '客户端连接数'
-    },
     tooltip: {
       trigger: 'axis'
     },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
+      containLabel: true
+    },
     xAxis: {
       type: 'category',
-      data: times
+      data: times,
+      boundaryGap: false
     },
     yAxis: {
       type: 'value',
@@ -275,12 +212,13 @@ const clientsChartOption = computed(() => {
     },
     series: [
       {
-        name: '连接数',
+        name: '当前连接',
         type: 'line',
-        data: clients,
+        data: connections,
         smooth: true,
         lineStyle: {
-          color: '#409EFF'
+          color: '#409EFF',
+          width: 2
         },
         areaStyle: {
           color: {
@@ -291,7 +229,7 @@ const clientsChartOption = computed(() => {
             y2: 1,
             colorStops: [
               { offset: 0, color: 'rgba(64, 158, 255, 0.3)' },
-              { offset: 1, color: 'rgba(64, 158, 255, 0.1)' }
+              { offset: 1, color: 'rgba(64, 158, 255, 0.05)' }
             ]
           }
         }
@@ -300,48 +238,53 @@ const clientsChartOption = computed(() => {
   }
 })
 
-// 系统资源图表配置
-const resourceChartOption = computed(() => {
+// 消息流量图表配置
+const messagesChartOption = computed(() => {
   const times = monitorData.value.map(item => formatTime(item.timestamp))
-  const memory = monitorData.value.map(item => item.memoryUsage)
-  const cpu = monitorData.value.map(item => item.cpuUsage)
+  const received = monitorData.value.map(item => item.messagesReceived)
+  const sent = monitorData.value.map(item => item.messagesSent)
   
   return {
-    title: {
-      text: '系统资源使用率'
-    },
     tooltip: {
       trigger: 'axis'
     },
     legend: {
-      data: ['内存使用率', 'CPU使用率']
+      data: ['接收数据包', '发送数据包']
+    },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
+      containLabel: true
     },
     xAxis: {
       type: 'category',
-      data: times
+      data: times,
+      boundaryGap: false
     },
     yAxis: {
       type: 'value',
-      name: '使用率(%)',
-      max: 100
+      name: '数据包数'
     },
     series: [
       {
-        name: '内存使用率',
+        name: '接收数据包',
         type: 'line',
-        data: memory,
+        data: received,
         smooth: true,
         lineStyle: {
-          color: '#67C23A'
+          color: '#67C23A',
+          width: 2
         }
       },
       {
-        name: 'CPU使用率',
+        name: '发送数据包',
         type: 'line',
-        data: cpu,
+        data: sent,
         smooth: true,
         lineStyle: {
-          color: '#E6A23C'
+          color: '#409EFF',
+          width: 2
         }
       }
     ]

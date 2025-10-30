@@ -2,31 +2,71 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { api } from '@/utils/api'
 
-export interface Stats {
-  connectedClients: number
-  totalMessages: number
-  totalSubscriptions: number
-  uptime: number
-  memoryUsage: number
-  cpuUsage: number
+// 连接统计
+export interface ConnectionStats {
+  accepted: number    // 已接受的连接数
+  size: number        // 当前连接数
+  closed: number      // 已关闭的连接数
 }
 
+// 消息统计
+export interface MessageStats {
+  handledPackets: number      // 已处理的数据包
+  handledBytes: number         // 已处理的字节数
+  receivedPackets: number      // 已接收的数据包
+  receivedBytes: number        // 已接收的字节数
+  sendPackets: number          // 已发送的数据包
+  sendBytes: number            // 已发送的字节数
+  bytesPerTcpReceive: number   // 每次TCP接收的字节数
+  packetsPerTcpReceive: number // 每次TCP接收的数据包数
+}
+
+// 节点统计
+export interface NodeStats {
+  clientNodes: number  // 客户端节点数
+  connections: number  // 连接数
+  users: number        // 用户数
+}
+
+// 总体统计
+export interface Stats {
+  connections: ConnectionStats
+  messages: MessageStats
+  nodes: NodeStats
+}
+
+// 监控数据
 export interface MonitorData {
   timestamp: number
-  connectedClients: number
-  messagesPerSecond: number
-  memoryUsage: number
-  cpuUsage: number
+  connections: number
+  messagesReceived: number
+  messagesSent: number
+  bytesReceived: number
+  bytesSent: number
 }
 
 export const useMonitorStore = defineStore('monitor', () => {
   const stats = ref<Stats>({
-    connectedClients: 0,
-    totalMessages: 0,
-    totalSubscriptions: 0,
-    uptime: 0,
-    memoryUsage: 0,
-    cpuUsage: 0
+    connections: {
+      accepted: 0,
+      size: 0,
+      closed: 0
+    },
+    messages: {
+      handledPackets: 0,
+      handledBytes: 0,
+      receivedPackets: 0,
+      receivedBytes: 0,
+      sendPackets: 0,
+      sendBytes: 0,
+      bytesPerTcpReceive: 0,
+      packetsPerTcpReceive: 0
+    },
+    nodes: {
+      clientNodes: 0,
+      connections: 0,
+      users: 0
+    }
   })
   
   const monitorData = ref<MonitorData[]>([])
@@ -58,12 +98,14 @@ export const useMonitorStore = defineStore('monitor', () => {
       try {
         const response = await api.get<{ data: Stats; code: number }>('/api/v1/stats')
         if (response.data.code === 1) {
+          const data = response.data.data
           const newData: MonitorData = {
             timestamp: Date.now(),
-            connectedClients: response.data.data.connectedClients,
-            messagesPerSecond: 0, // 需要根据实际API调整
-            memoryUsage: response.data.data.memoryUsage,
-            cpuUsage: response.data.data.cpuUsage
+            connections: data.connections.size,
+            messagesReceived: data.messages.receivedPackets,
+            messagesSent: data.messages.sendPackets,
+            bytesReceived: data.messages.receivedBytes,
+            bytesSent: data.messages.sendBytes
           }
           
           monitorData.value.push(newData)
