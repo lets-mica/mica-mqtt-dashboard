@@ -2,10 +2,12 @@
   <div class="dashboard">
       <h1>仪表盘</h1>
       
-      <!-- 节点统计 -->
-      <div class="section-title">节点统计</div>
-      <el-row :gutter="20" class="stats-cards">
-        <el-col :span="8">
+      <!-- 连接统计 -->
+      <div class="section-title">
+        <span>连接统计</span>
+      </div>
+      <el-row :gutter="16" class="stats-cards">
+        <el-col :span="4">
           <el-card class="stat-card">
             <div class="stat-content">
               <div class="stat-icon" style="color: #409EFF">
@@ -19,7 +21,7 @@
           </el-card>
         </el-col>
         
-        <el-col :span="8">
+        <el-col :span="4">
           <el-card class="stat-card">
             <div class="stat-content">
               <div class="stat-icon" style="color: #67C23A">
@@ -32,8 +34,50 @@
             </div>
           </el-card>
         </el-col>
+ 
+        <el-col :span="4">
+          <el-card class="stat-card">
+            <div class="stat-content">
+              <div class="stat-icon" style="color: #67C23A">
+                <el-icon><CircleCheck /></el-icon>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value">{{ formatNumber(stats.connections?.accepted) }}</div>
+                <div class="stat-label">已接受连接</div>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+
+        <el-col :span="4">
+          <el-card class="stat-card">
+            <div class="stat-content">
+              <div class="stat-icon" style="color: #409EFF">
+                <el-icon><Connection /></el-icon>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value">{{ formatNumber(stats.connections?.size) }}</div>
+                <div class="stat-label">当前连接数</div>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+
+        <el-col :span="4">
+          <el-card class="stat-card">
+            <div class="stat-content">
+              <div class="stat-icon" style="color: #909399">
+                <el-icon><CircleClose /></el-icon>
+              </div>
+              <div class="stat-info">
+                <div class="stat-value">{{ formatNumber(stats.connections?.closed) }}</div>
+                <div class="stat-label">已关闭连接</div>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
         
-        <el-col :span="8">
+        <el-col :span="4">
           <el-card class="stat-card">
             <div class="stat-content">
               <div class="stat-icon" style="color: #E6A23C">
@@ -48,55 +92,9 @@
         </el-col>
       </el-row>
 
-      <!-- 连接统计 -->
-      <div class="section-title">连接统计</div>
-      <el-row :gutter="20" class="stats-cards">
-        <el-col :span="8">
-          <el-card class="stat-card">
-            <div class="stat-content">
-              <div class="stat-icon" style="color: #67C23A">
-                <el-icon><CircleCheck /></el-icon>
-              </div>
-              <div class="stat-info">
-                <div class="stat-value">{{ formatNumber(stats.connections?.accepted) }}</div>
-                <div class="stat-label">已接受连接</div>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-        
-        <el-col :span="8">
-          <el-card class="stat-card">
-            <div class="stat-content">
-              <div class="stat-icon" style="color: #409EFF">
-                <el-icon><Connection /></el-icon>
-              </div>
-              <div class="stat-info">
-                <div class="stat-value">{{ formatNumber(stats.connections?.size) }}</div>
-                <div class="stat-label">当前连接数</div>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-        
-        <el-col :span="8">
-          <el-card class="stat-card">
-            <div class="stat-content">
-              <div class="stat-icon" style="color: #909399">
-                <el-icon><CircleClose /></el-icon>
-              </div>
-              <div class="stat-info">
-                <div class="stat-value">{{ formatNumber(stats.connections?.closed) }}</div>
-                <div class="stat-label">已关闭连接</div>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-      </el-row>
-
       <!-- 消息统计 -->
       <div class="section-title">消息统计</div>
-      <el-row :gutter="20" class="stats-cards">
+      <el-row :gutter="16" class="stats-cards">
         <el-col :span="6">
           <el-card class="stat-card">
             <div class="stat-content">
@@ -246,41 +244,59 @@ onMounted(async () => {
   border-left: 4px solid var(--el-color-primary);
 }
 
+.title-separator {
+  margin: 0 12px;
+  color: var(--el-color-primary);
+  font-weight: 400;
+}
+
 .stats-cards {
   margin-bottom: 20px;
 }
 
 .stat-card {
-  height: 120px;
+  height: 110px;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .stat-content {
   display: flex;
   align-items: center;
   height: 100%;
+  padding: 0 8px;
 }
 
 .stat-icon {
-  font-size: 48px;
+  font-size: 42px;
   color: var(--el-color-primary);
-  margin-right: 16px;
+  margin-right: 12px;
+  flex-shrink: 0;
 }
 
 .stat-info {
   flex: 1;
+  min-width: 0;
 }
 
 .stat-value {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: bold;
   color: var(--el-text-color-primary);
-  line-height: 1;
-  margin-bottom: 8px;
+  line-height: 1.2;
+  margin-bottom: 6px;
 }
 
 .stat-label {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--el-text-color-regular);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .resource-charts {

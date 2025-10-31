@@ -29,7 +29,9 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'http://localhost:18083',
-        changeOrigin: true
+        changeOrigin: true,
+        ws: true,
+        timeout: 0
       }
     }
   }
