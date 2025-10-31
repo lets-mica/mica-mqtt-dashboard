@@ -153,7 +153,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { ArrowLeft, Plus } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
@@ -161,6 +161,7 @@ import { useClientStore } from '@/stores/client'
 import { formatTime } from '@/utils/format'
 
 const route = useRoute()
+const router = useRouter()
 const clientStore = useClientStore()
 
 // 使用 storeToRefs 解构响应式状态
@@ -204,7 +205,8 @@ const handleKickClient = async () => {
     const success = await kickClient(currentClient.value.clientId)
     if (success) {
       ElMessage.success('客户端已踢出')
-      await loadClientDetail()
+      // 踢出成功后返回客户端列表
+      router.back()
     } else {
       ElMessage.error('踢出客户端失败')
     }
