@@ -34,7 +34,7 @@
   "dependencies": {
     "vue": "^3.4.0",
     "vue-router": "^4.2.5",
-    "pinia": "^2.1.7",
+    "pinia": "^3.0.4",
     "axios": "^1.6.2",
     "element-plus": "^2.4.4",
     "@element-plus/icons-vue": "^2.3.1",
