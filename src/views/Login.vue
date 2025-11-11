@@ -99,11 +99,9 @@ const rules: FormRules = {
 // 从本地存储恢复记住的账号
 onMounted(() => {
   const savedUsername = localStorage.getItem('saved_username')
-  const savedPassword = localStorage.getItem('saved_password')
   
-  if (savedUsername && savedPassword) {
+  if (savedUsername) {
     loginForm.username = savedUsername
-    loginForm.password = savedPassword
     loginForm.remember = true
   }
 })
@@ -128,10 +126,8 @@ const handleLogin = async () => {
         // 保存/清除记住的密码
         if (loginForm.remember) {
           localStorage.setItem('saved_username', loginForm.username)
-          localStorage.setItem('saved_password', loginForm.password)
         } else {
           localStorage.removeItem('saved_username')
-          localStorage.removeItem('saved_password')
         }
 
         // 跳转到目标页面或首页
