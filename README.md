@@ -1,6 +1,6 @@
 # Mica MQTT Dashboard
 
-一个现代化的 Mica MQTT 服务器管理界面，基于 Vue 3 + Vite + TypeScript 构建。
+一个现代化的 [Mica MQTT](https://github.com/lets-mica/mica-mqtt) 服务器管理界面，基于 Vue 3 + Vite + TypeScript 构建。
 
 ## 功能特性
 
