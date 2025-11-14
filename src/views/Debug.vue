@@ -3,14 +3,6 @@
       <div class="page-header">
         <h1>MQTT 调试</h1>
         <div class="header-actions">
-          <el-button
-            :type="connected ? 'danger' : 'primary'"
-            @click="toggleConnection"
-            :loading="connecting"
-          >
-            <el-icon><Connection v-if="!connected" /><Close v-else /></el-icon>
-            {{ connected ? '断开连接' : '连接' }}
-          </el-button>
           <el-button @click="clearMessages" :disabled="!messages.length">
             <el-icon><Delete /></el-icon>
             清空消息
@@ -53,6 +45,17 @@
               
               <el-form-item label="保活时间">
                 <el-input-number v-model="connection.keepalive" :min="0" :max="65535" />
+              </el-form-item>
+              
+              <el-form-item>
+                <el-button
+                  :type="connected ? 'danger' : 'primary'"
+                  @click="toggleConnection"
+                  :loading="connecting"
+                >
+                  <el-icon><Connection v-if="!connected" /><Close v-else /></el-icon>
+                  {{ connected ? '断开' : '连接' }}
+                </el-button>
               </el-form-item>
             </el-form>
           </el-card>
@@ -172,15 +175,7 @@
                     <el-option label="接收" value="in" />
                     <el-option label="发送" value="out" />
                   </el-select>
-                  <el-input-number
-                    v-model="maxMessages"
-                    :min="100"
-                    :max="10000"
-                    :step="100"
-                    placeholder="最大消息数"
-                    style="width: 120px;"
-                    @change="updateFilteredMessages"
-                  />
+
                 </div>
               </div>
             </template>

@@ -3,14 +3,6 @@
       <div class="page-header">
         <h1>状态监控</h1>
         <div class="header-actions">
-          <el-button
-            :type="realtimeEnabled ? 'danger' : 'primary'"
-            @click="toggleRealtimeMonitor"
-            :loading="loading"
-          >
-            <el-icon><VideoPlay v-if="!realtimeEnabled" /><VideoPause v-else /></el-icon>
-            {{ realtimeEnabled ? '停止监控' : '开始监控' }}
-          </el-button>
           <el-button @click="clearMonitorData" :disabled="!monitorData.length">
             <el-icon><Delete /></el-icon>
             清空数据
@@ -155,7 +147,7 @@ import {
 } from 'echarts/components'
 import VChart from 'vue-echarts'
 import { storeToRefs } from 'pinia'
-import { VideoPlay, VideoPause, Delete, User, Connection, Download, Upload } from '@element-plus/icons-vue'
+import { Delete, User, Connection, Download, Upload } from '@element-plus/icons-vue'
 import { useMonitorStore } from '@/stores/monitor'
 import { formatNumber, formatTime, formatFileSize } from '@/utils/format'
 
@@ -177,14 +169,7 @@ const { stats, monitorData, loading, realtimeEnabled } = storeToRefs(monitorStor
 // 直接解构方法
 const { fetchStats, startRealtimeMonitor, stopRealtimeMonitor, clearMonitorData } = monitorStore
 
-// 切换实时监控
-const toggleRealtimeMonitor = () => {
-  if (realtimeEnabled.value) {
-    stopRealtimeMonitor()
-  } else {
-    startRealtimeMonitor()
-  }
-}
+// 注意：不再需要手动切换监控，页面加载时自动开始监控
 
 // 连接数图表配置
 const connectionsChartOption = computed(() => {
@@ -293,6 +278,8 @@ const messagesChartOption = computed(() => {
 
 onMounted(() => {
   fetchStats()
+  // 页面加载后自动开始实时监控
+  startRealtimeMonitor()
 })
 
 onUnmounted(() => {
@@ -302,7 +289,7 @@ onUnmounted(() => {
 
 <style scoped>
 .monitor-page {
-  max-width: 1400px;
+  max-width: 1600px;
   margin: 0 auto;
 }
 
