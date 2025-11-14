@@ -15,7 +15,17 @@
           <el-col :span="12">
             <el-card>
               <template #header>
-                <span>基本信息</span>
+                <div class="card-header">
+                  <span>基本信息</span>
+                  <el-button
+                    type="danger"
+                    @click="handleKickClient"
+                    :disabled="!currentClient?.connected"
+                  >
+                    <el-icon><Close /></el-icon>
+                    踢出客户端
+                  </el-button>
+                </div>
               </template>
               
               <el-descriptions :column="1" border>
@@ -63,26 +73,8 @@
 
           <!-- 操作面板 -->
           <el-col :span="12">
-            <el-card>
-              <template #header>
-                <span>操作</span>
-              </template>
-              
-              <div class="action-buttons">
-                <el-button
-                  type="danger"
-                  @click="handleKickClient"
-                  :disabled="!currentClient?.connected"
-                  size="large"
-                >
-                  <el-icon><Close /></el-icon>
-                  踢出客户端
-                </el-button>
-              </div>
-            </el-card>
-
             <!-- 代理订阅 -->
-            <el-card style="margin-top: 20px;">
+            <el-card>
               <template #header>
                 <span>代理订阅</span>
               </template>
@@ -112,41 +104,39 @@
                 </el-form-item>
               </el-form>
             </el-card>
+            <!-- 订阅列表 -->
+            <el-card style="margin-top: 20px;">
+              <template #header>
+                <div class="card-header">
+                  <span>订阅列表</span>
+                  <el-button @click="refreshSubscriptions" :loading="loading">
+                    <el-icon><Refresh /></el-icon>
+                    刷新
+                  </el-button>
+                </div>
+              </template>
+              <el-table :data="currentClient?.subscriptions || []" v-loading="loading">
+                <el-table-column prop="topicFilter" label="主题过滤器" />
+                <el-table-column prop="mqttQoS" label="QoS">
+                  <template #default="{ row }">
+                    <el-tag>{{ row.mqttQoS }}</el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column label="操作" width="200">
+                  <template #default="{ row }">
+                    <el-button
+                      type="danger"
+                      size="small"
+                      @click="handleUnsubscribe(row.topicFilter)"
+                    >
+                      取消订阅
+                    </el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-card>
           </el-col>
         </el-row>
-
-        <!-- 订阅列表 -->
-        <el-card style="margin-top: 20px;">
-          <template #header>
-            <div class="card-header">
-              <span>订阅列表</span>
-              <el-button @click="refreshSubscriptions" :loading="loading">
-                <el-icon><Refresh /></el-icon>
-                刷新
-              </el-button>
-            </div>
-          </template>
-          
-          <el-table :data="currentClient?.subscriptions || []" v-loading="loading">
-            <el-table-column prop="topicFilter" label="主题过滤器" />
-            <el-table-column prop="mqttQoS" label="QoS">
-              <template #default="{ row }">
-                <el-tag>{{ row.mqttQoS }}</el-tag>
-              </template>
-            </el-table-column>
-            <el-table-column label="操作" width="200">
-              <template #default="{ row }">
-                <el-button
-                  type="danger"
-                  size="small"
-                  @click="handleUnsubscribe(row.topicFilter)"
-                >
-                  取消订阅
-                </el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-card>
       </div>
     </div>
 </template>
@@ -155,7 +145,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { ArrowLeft, Plus } from '@element-plus/icons-vue'
+import { ArrowLeft, Plus, Close } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useClientStore } from '@/stores/client'
 import { formatTime } from '@/utils/format'
