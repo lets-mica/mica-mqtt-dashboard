@@ -32,7 +32,7 @@
     "format": "prettier --write \"src/**/*.{js,ts,vue,json,css,scss,md}\""
   },
   "dependencies": {
-    "vue": "^3.5.24",
+    "vue": "^3.5.25",
     "vue-router": "^4.2.5",
     "pinia": "^3.0.4",
     "axios": "^1.13.2",
