@@ -46,6 +46,9 @@
                 <el-descriptions-item label="端口">
                   {{ currentClient?.port }}
                 </el-descriptions-item>
+                <el-descriptions-item label="keepAlive">
+                  {{ currentClient?.keepAlive }}s
+                </el-descriptions-item>
                 <el-descriptions-item label="协议">
                   {{ currentClient?.protoFullName }}
                 </el-descriptions-item>
@@ -54,9 +57,6 @@
                 </el-descriptions-item>
                 <el-descriptions-item label="SSL">
                   {{ currentClient?.ssl ? '是' : '否' }}
-                </el-descriptions-item>
-                <el-descriptions-item label="keepAlive">
-                  {{ currentClient?.keepAlive }}s
                 </el-descriptions-item>
                 <el-descriptions-item label="解码队列大小">
                   {{ currentClient?.decodeQueueSize }}
