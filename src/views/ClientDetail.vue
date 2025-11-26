@@ -33,7 +33,7 @@
                   {{ currentClient?.clientId }}
                 </el-descriptions-item>
                 <el-descriptions-item label="用户名">
-                  {{ currentClient?.username || 'N/A' }}
+                  {{ currentClient?.username }}
                 </el-descriptions-item>
                 <el-descriptions-item label="连接状态">
                   <el-tag :type="currentClient?.connected ? 'success' : 'danger'">
@@ -41,31 +41,31 @@
                   </el-tag>
                 </el-descriptions-item>
                 <el-descriptions-item label="IP地址">
-                  {{ currentClient?.ipAddress || 'N/A' }}
+                  {{ currentClient?.ipAddress }}
                 </el-descriptions-item>
                 <el-descriptions-item label="端口">
-                  {{ currentClient?.port || 'N/A' }}
+                  {{ currentClient?.port }}
                 </el-descriptions-item>
                 <el-descriptions-item label="协议">
-                  {{ currentClient?.protoFullName || 'N/A' }}
+                  {{ currentClient?.protoFullName }}
                 </el-descriptions-item>
                 <el-descriptions-item label="keepAlive">
-                  {{ currentClient?.keepAlive || 'N/A' }}s
+                  {{ currentClient?.keepAlive }}s
                 </el-descriptions-item>
                 <el-descriptions-item label="解码队列大小">
-                  {{ currentClient?.decodeQueueSize || 'N/A' }}
+                  {{ currentClient?.decodeQueueSize }}
                 </el-descriptions-item>
                 <el-descriptions-item label="处理队列大小">
-                  {{ currentClient?.handlerQueueSize || 'N/A' }}
+                  {{ currentClient?.handlerQueueSize }}
                 </el-descriptions-item>
                 <el-descriptions-item label="发送队列大小">
-                  {{ currentClient?.sendQueueSize || 'N/A' }}
+                  {{ currentClient?.sendQueueSize }}
                 </el-descriptions-item>
                 <el-descriptions-item label="连接时间">
-                  {{ currentClient?.connectedAt ? formatTime(currentClient.connectedAt) : 'N/A' }}
+                  {{ currentClient?.connectedAt ? formatTime(currentClient.connectedAt) : '' }}
                 </el-descriptions-item>
                 <el-descriptions-item label="创建时间">
-                  {{ currentClient?.createdAt ? formatTime(currentClient.createdAt) : 'N/A' }}
+                  {{ currentClient?.createdAt ? formatTime(currentClient.createdAt) : '' }}
                 </el-descriptions-item>
               </el-descriptions>
             </el-card>
