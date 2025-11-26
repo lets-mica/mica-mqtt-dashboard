@@ -164,7 +164,7 @@ use([
 const monitorStore = useMonitorStore()
 
 // 使用 storeToRefs 解构响应式状态
-const { stats, monitorData, loading, realtimeEnabled } = storeToRefs(monitorStore)
+const { stats, monitorData, loading } = storeToRefs(monitorStore)
 
 // 直接解构方法
 const { fetchStats, startRealtimeMonitor, stopRealtimeMonitor, clearMonitorData } = monitorStore
