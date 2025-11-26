@@ -10,6 +10,8 @@ export interface Client {
   protoName?: string
   protoVer?: number
   protoFullName?: string
+  webSocket?: boolean
+  ssl?: boolean
   ipAddress?: string
   port?: number
   createdAt: number

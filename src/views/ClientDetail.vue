@@ -49,6 +49,12 @@
                 <el-descriptions-item label="协议">
                   {{ currentClient?.protoFullName }}
                 </el-descriptions-item>
+                <el-descriptions-item label="WebSocket">
+                  {{ currentClient?.webSocket ? '是' : '否' }}
+                </el-descriptions-item>
+                <el-descriptions-item label="SSL">
+                  {{ currentClient?.ssl ? '是' : '否' }}
+                </el-descriptions-item>
                 <el-descriptions-item label="keepAlive">
                   {{ currentClient?.keepAlive }}s
                 </el-descriptions-item>
