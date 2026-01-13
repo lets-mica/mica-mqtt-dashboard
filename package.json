@@ -44,7 +44,7 @@
     "vue-echarts": "^6.6.1"
   },
   "devDependencies": {
-    "@types/node": "^25.0.3",
+    "@types/node": "^25.0.7",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^6.14.0",
     "@vitejs/plugin-vue": "^6.0.3",
