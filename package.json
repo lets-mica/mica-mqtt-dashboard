@@ -36,7 +36,7 @@
     "vue-router": "^5.0.3",
     "pinia": "^3.0.4",
     "axios": "^1.13.5",
-    "element-plus": "^2.13.1",
+    "element-plus": "^2.13.5",
     "@element-plus/icons-vue": "^2.3.1",
     "mqtt": "^5.15.0",
     "dayjs": "^1.11.19",
