@@ -21,8 +21,8 @@ importers:
         specifier: ^5.4.3
         version: 5.6.0
       element-plus:
-        specifier: ^2.13.6
-        version: 2.13.6(typescript@6.0.2)(vue@3.5.32(typescript@6.0.2))
+        specifier: ^2.13.7
+        version: 2.13.7(typescript@6.0.2)(vue@3.5.32(typescript@6.0.2))
       mqtt:
         specifier: ^5.15.1
         version: 5.15.1
@@ -843,8 +843,8 @@ packages:
   echarts@5.6.0:
     resolution: {integrity: sha512-oTbVTsXfKuEhxftHqL5xprgLoc0k7uScAwtryCgWF6hPYFLRwOUHiFmHGCBKP5NPFNkDVopOieyUqYGH8Fa3kA==}
 
-  element-plus@2.13.6:
-    resolution: {integrity: sha512-XHgwXr8Fjz6i+6BaqFhAbae/dJbG7bBAAlHrY3pWL7dpj+JcqcOyKYt4Oy5KP86FQwS1k4uIZDjCx2FyUR5lDg==}
+  element-plus@2.13.7:
+    resolution: {integrity: sha512-XdHATFZOyzVFL1DaHQ90IOJQSg9UnSAV+bhDW+YB5UoZ0Hxs50mwqjqfwXkuwpSag+VXXizVcErBR6Movo5daw==}
     peerDependencies:
       vue: ^3.3.0
 
@@ -2538,7 +2538,7 @@ snapshots:
       tslib: 2.3.0
       zrender: 5.6.1
 
-  element-plus@2.13.6(typescript@6.0.2)(vue@3.5.32(typescript@6.0.2)):
+  element-plus@2.13.7(typescript@6.0.2)(vue@3.5.32(typescript@6.0.2)):
     dependencies:
       '@ctrl/tinycolor': 4.2.0
       '@element-plus/icons-vue': 2.3.2(vue@3.5.32(typescript@6.0.2))
