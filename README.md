@@ -2,6 +2,8 @@
 
 一个现代化的 [Mica MQTT](https://github.com/lets-mica/mica-mqtt) 服务器管理界面，基于 Vue 3 + Vite + TypeScript 构建。
 
+[✨✨✨推广：**BladeX 物联网平台**✨✨✨iot.bladex.cn](https://iot.bladex.cn?from=mica-mqtt)
+
 ## 功能特性
 
 ### 🏠 仪表盘

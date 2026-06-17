@@ -1,0 +1,3 @@
+allowBuilds:
+  vue-demi: false
+  vue-echarts: false
