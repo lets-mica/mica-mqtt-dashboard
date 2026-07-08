@@ -38,7 +38,7 @@
     "axios": "^1.18.1",
     "element-plus": "^2.14.2",
     "@element-plus/icons-vue": "^2.3.1",
-    "mqtt": "^5.15.1",
+    "mqtt": "^5.15.2",
     "dayjs": "^1.11.21",
     "echarts": "^5.4.3",
     "vue-echarts": "^6.6.1"
