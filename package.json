@@ -21,7 +21,7 @@
     "pnpm": ">=8.0.0"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "build:prod": "vite build --mode production",
     "preview": "vite preview",
@@ -29,32 +29,33 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "lint:check": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore",
     "type-check": "vue-tsc --noEmit",
-    "format": "prettier --write \"src/**/*.{js,ts,vue,json,css,scss,md}\""
+    "format": "prettier --write \"src/**/*.{js,ts,vue,json,css,scss,md}\"",
+    "update": "pnpm dlx vp-update"
   },
   "dependencies": {
-    "vue": "^3.5.38",
-    "vue-router": "^5.1.0",
-    "pinia": "^3.0.4",
-    "axios": "^1.18.0",
-    "element-plus": "^2.14.2",
-    "@element-plus/icons-vue": "^2.3.1",
-    "mqtt": "^5.15.1",
+    "@element-plus/icons-vue": "^2.3.2",
+    "axios": "^1.18.1",
     "dayjs": "^1.11.21",
     "echarts": "^5.4.3",
-    "vue-echarts": "^6.6.1"
+    "element-plus": "^2.14.3",
+    "mqtt": "^5.15.2",
+    "pinia": "^3.0.4",
+    "vue": "^3.5.39",
+    "vue-echarts": "^6.6.1",
+    "vue-router": "^5.1.0"
   },
   "devDependencies": {
-    "@types/node": "^26.0.0",
+    "@types/node": "^26.1.1",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^6.14.0",
     "@vitejs/plugin-vue": "^6.0.7",
     "eslint": "^8.55.0",
     "eslint-plugin-vue": "^9.19.2",
-    "prettier": "^3.8.4",
+    "prettier": "^3.9.5",
     "typescript": "^6.0.3",
     "unplugin-auto-import": "^21.0.0",
     "unplugin-vue-components": "^32.1.0",
-    "vite": "^8.0.16",
-    "vue-tsc": "^3.3.5"
+    "vite": "^8.1.4",
+    "vue-tsc": "^3.3.7"
   }
 }
