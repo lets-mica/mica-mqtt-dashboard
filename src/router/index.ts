@@ -58,9 +58,9 @@ const router = createRouter({
 })
 
 // 路由守卫
-router.beforeEach((to, from, next) => {
+router.beforeEach((to) => {
   const authStore = useAuthStore()
-  
+
   // 初始化认证状态
   if (!authStore.isAuthenticated) {
     authStore.initAuth()
@@ -70,21 +70,20 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth !== false) {
     if (!authStore.isAuthenticated) {
       // 未登录，跳转到登录页
-      next({
+      return {
         path: '/login',
         query: { redirect: to.fullPath }
-      })
-      return
+      }
     }
   }
 
   // 如果已登录访问登录页，跳转到首页
   if (to.path === '/login' && authStore.isAuthenticated) {
-    next('/dashboard')
-    return
+    return '/dashboard'
   }
 
-  next()
+  // 放行
+  return true
 })
 
 export default router

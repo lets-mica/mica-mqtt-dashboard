@@ -42,7 +42,7 @@
       <el-header class="header">
         <div class="header-left">
           <el-button
-            type="text"
+            link
             @click="toggleSidebar"
             class="sidebar-toggle"
           >
@@ -56,7 +56,7 @@
 
         <div class="header-right">
           <el-button
-            type="text"
+            link
             @click="toggleTheme"
             class="theme-toggle"
           >
