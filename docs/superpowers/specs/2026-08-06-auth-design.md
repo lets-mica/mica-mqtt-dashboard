@@ -58,7 +58,9 @@ export interface AuthProvider {
   init(): void                                // 从 storage 恢复会话
   isAuthenticated(): boolean
   getUsername(): string                       // 显示用（布局顶栏）
-  login(...args: any[]): Promise<LoginResult> // basic: 账密; oauth: 触发跳转
+  login(username: string, password: string): Promise<LoginResult> // basic 模式
+  startLogin(): Promise<void>                 // oauth 模式：跳转 IdP 授权端点
+  handleCallback(): Promise<LoginResult>      // oauth 模式：处理 IdP 回调（code 换 token）
   getApiCredentials(): BasicCredentials | null // axios 拦截器取 broker 凭据
   logout(): void
 }
@@ -121,15 +123,17 @@ VITE_BROKER_PASSWORD=
 
 ### 登录流程
 
-1. 登录页显示「使用企业账号登录」按钮 → `OidcAuthProvider.login()`：
+1. 登录页显示「使用企业账号登录」按钮 → `OidcAuthProvider.startLogin()`：
    - `crypto.randomUUID()` 生成 `code_verifier`
    - `crypto.subtle.digest('SHA-256', verifier)` 生成 `code_challenge`（base64url）
    - `crypto.randomUUID()` 生成 `state`
+   - `code_verifier` / `state` 暂存 sessionStorage（键 `mqtt_oauth_verifier` / `mqtt_oauth_state`），回调时读取校验后清理
    - 跳转 IdP 授权端点（`response_type=code&client_id=...&redirect_uri=<当前origin>/login&state=...&code_challenge=...&code_challenge_method=S256`）
-2. IdP 回调 `/login?code=...&state=...`：
-   - 校验 `state`（防 CSRF，与发起时一致）
-   - 用 `code` + `code_verifier` 请求 IdP token 端点换取 `access_token`（+ `id_token`）
+2. IdP 回调 `/login?code=...&state=...` → `OidcAuthProvider.handleCallback()`：
+   - 从 sessionStorage 取回 `state` 并校验（防 CSRF），校验失败即拒绝登录
+   - 从 sessionStorage 取回 `code_verifier`，用 `code` + `code_verifier` 请求 IdP token 端点换取 `access_token`（+ `id_token`）
    - 调用 IdP `userinfo` 端点获取用户名（`preferred_username` 或 `sub`），仅用于顶栏显示
+   - 清理 sessionStorage 中的 `code_verifier` / `state`
 3. 登录成功：token 存 **sessionStorage**（不落盘），`isAuthenticated = true`
 
 ### broker 凭据
@@ -141,7 +145,7 @@ VITE_BROKER_PASSWORD=
 ### 会话过期
 
 - 路由守卫检查 `isAuthenticated`；userinfo 401/过期 → `logout()` 回登录页
-- 刷新页面后从 sessionStorage 恢复会话；token 过期由下次 userinfo 校验发现（可选：按需刷新）
+- 刷新页面后从 sessionStorage 恢复会话；token 过期由下次 userinfo 校验发现，不做自动刷新（见第 8 节非目标）
 
 ### 端点发现
 
