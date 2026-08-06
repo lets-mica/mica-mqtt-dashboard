@@ -1,5 +1,19 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
+import type { BasicCredentials } from '@/auth'
+
+// 认证凭据获取函数（由 main.ts 注入，避免与 auth store 循环依赖）
+let credentialsProvider: (() => BasicCredentials | null) | null = null
+// 认证失效回调（由 main.ts 注入，调用 authStore.logout）
+let unauthorizedHandler: (() => void) | null = null
+
+export const setCredentialsProvider = (fn: (() => BasicCredentials | null) | null) => {
+  credentialsProvider = fn
+}
+
+export const setUnauthorizedHandler = (fn: (() => void) | null) => {
+  unauthorizedHandler = fn
+}
 
 // 创建axios实例
 const api = axios.create({
@@ -13,17 +27,10 @@ const api = axios.create({
 // 请求拦截器
 api.interceptors.request.use(
   (config) => {
-    // 添加认证信息
-    const username = localStorage.getItem('mqtt_username')
-    const password = localStorage.getItem('mqtt_password')
-
-    if (username && password) {
-      config.auth = {
-        username,
-        password
-      }
+    const credentials = credentialsProvider ? credentialsProvider() : null
+    if (credentials) {
+      config.auth = credentials
     }
-
     return config
   },
   (error) => {
@@ -42,14 +49,13 @@ api.interceptors.response.use(
 
       switch (status) {
         case 401:
-          // 认证失败，清除本地认证信息并跳转到登录页
-          localStorage.removeItem('mqtt_username')
-          localStorage.removeItem('mqtt_password')
-          
+          if (unauthorizedHandler) {
+            unauthorizedHandler()
+          }
           // 避免在登录页面重复提示
           if (!window.location.pathname.includes('/login')) {
             ElMessage.error('认证失败，请重新登录')
-            
+
             // 延迟跳转，确保消息显示
             setTimeout(() => {
               const currentPath = window.location.pathname
