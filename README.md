@@ -104,6 +104,10 @@ pnpm preview
 | `VITE_MQTT_HOST` | MQTT WebSocket 主机 | `localhost` |
 | `VITE_MQTT_PORT` | MQTT WebSocket 端口 | `8083` |
 | `VITE_MQTT_CLIENT_ID_PREFIX` | MQTT 客户端ID前缀 | `mica_web_` |
+| `VITE_AUTH_MODE` | 认证模式：`basic`（默认）或 `oauth` | `basic` |
+| `VITE_OAUTH_ISSUER` | OAuth 模式的 IdP 地址（如 Keycloak Realm 地址） | 空 |
+| `VITE_OAUTH_CLIENT_ID` | OAuth 模式的客户端 ID | 空 |
+| `VITE_OAUTH_SCOPES` | OAuth 模式申请的 Scope | `openid profile` |
 
 ### API 代理配置（开发环境）
 
@@ -122,7 +126,34 @@ server: {
 
 ### 认证配置
 
-通过登录页面输入用户名和密码即可进行认证。认证信息会保存在浏览器的 `localStorage` 中。
+项目支持两种认证模式，通过 `VITE_AUTH_MODE` 环境变量切换（构建时生效）：
+
+#### Basic 认证（默认）
+
+登录页输入用户名和密码即可认证，认证信息保存在浏览器的 `localStorage` 中。此模式对接 mica-mqtt HTTP API 的内置 `basic-auth`。
+
+```env
+VITE_AUTH_MODE=basic
+```
+
+#### OAuth 认证
+
+采用 OIDC（OpenID Connect）标准 + PKCE（Proof Key for Code Exchange）授权码流程，适配任意 OIDC 兼容的身份提供方（如 Keycloak、Authing、GitHub 等）。
+
+```env
+VITE_AUTH_MODE=oauth
+VITE_OAUTH_ISSUER=https://sso.example.com/realms/your-realm
+VITE_OAUTH_CLIENT_ID=your-client-id
+VITE_OAUTH_SCOPES=openid profile
+```
+
+配置说明：
+
+- `VITE_OAUTH_ISSUER` 为身份提供方（IdP）地址，前端会自动拼接 `/.well-known/openid-configuration` 完成端点发现
+- 登录成功后，前端对 mica-mqtt HTTP API 的请求携带 `Authorization: Bearer <access_token>`
+- 服务端需自定义 `HttpFilter` 或者 `ITokenValidator(2.6.10开始支持)` 校验该 Bearer Token（mica-mqtt 的 HTTP API 认证基于可插拔的 `HttpFilter` 机制，`basic-auth` 仅是默认实现之一）
+
+> 详细测试步骤见 [docs/oauth-testing.md](./docs/oauth-testing.md)。
 
 ## 项目结构
 
