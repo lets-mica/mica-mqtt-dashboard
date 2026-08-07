@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { api } from '@/utils/api'
 import { createAuthProvider } from '@/auth'
-import type { AuthProvider, BasicCredentials, LoginResult } from '@/auth'
+import type { ApiCredentials, AuthProvider, LoginResult } from '@/auth'
 
 export const useAuthStore = defineStore('auth', () => {
   const provider: AuthProvider = createAuthProvider()
@@ -36,7 +36,7 @@ export const useAuthStore = defineStore('auth', () => {
     return result
   }
 
-  const getApiCredentials = (): BasicCredentials | null => provider.getApiCredentials()
+  const getApiCredentials = (): ApiCredentials | null => provider.getApiCredentials()
 
   const logout = () => {
     provider.logout()

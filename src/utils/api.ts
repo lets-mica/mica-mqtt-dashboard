@@ -1,13 +1,13 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
-import type { BasicCredentials } from '@/auth'
+import type { ApiCredentials } from '@/auth'
 
 // 认证凭据获取函数（由 main.ts 注入，避免与 auth store 循环依赖）
-let credentialsProvider: (() => BasicCredentials | null) | null = null
+let credentialsProvider: (() => ApiCredentials | null) | null = null
 // 认证失效回调（由 main.ts 注入，调用 authStore.logout）
 let unauthorizedHandler: (() => void) | null = null
 
-export const setCredentialsProvider = (fn: (() => BasicCredentials | null) | null) => {
+export const setCredentialsProvider = (fn: (() => ApiCredentials | null) | null) => {
   credentialsProvider = fn
 }
 
@@ -29,7 +29,16 @@ api.interceptors.request.use(
   (config) => {
     const credentials = credentialsProvider ? credentialsProvider() : null
     if (credentials) {
-      config.auth = credentials
+      // Basic 模式：HTTP Basic 认证
+      if (credentials.auth) {
+        config.auth = credentials.auth
+      }
+      // OAuth 模式：Bearer token
+      if (credentials.headers && config.headers) {
+        for (const [key, value] of Object.entries(credentials.headers)) {
+          config.headers.set(key, value)
+        }
+      }
     }
     return config
   },

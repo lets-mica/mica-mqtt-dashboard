@@ -1,4 +1,4 @@
-import type { AuthProvider, BasicCredentials, LoginResult } from './types'
+import type { ApiCredentials, AuthProvider, LoginResult } from './types'
 
 const VERIFIER_KEY = 'mqtt_oauth_verifier'
 const STATE_KEY = 'mqtt_oauth_state'
@@ -10,8 +10,6 @@ export interface OidcConfig {
   issuer: string
   clientId: string
   scopes: string[]
-  brokerUsername: string
-  brokerPassword: string
 }
 
 interface OidcEndpoints {
@@ -160,10 +158,8 @@ export function createOidcAuthProvider(config: OidcConfig): AuthProvider {
     }
   }
 
-  const getApiCredentials = (): BasicCredentials | null =>
-    isAuthenticated
-      ? { username: config.brokerUsername, password: config.brokerPassword }
-      : null
+  const getApiCredentials = (): ApiCredentials | null =>
+    isAuthenticated ? { headers: { Authorization: `Bearer ${token}` } } : null
 
   const logout = () => {
     isAuthenticated = false

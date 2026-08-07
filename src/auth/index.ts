@@ -20,9 +20,7 @@ export function createAuthProvider(): AuthProvider {
     return createOidcAuthProvider({
       issuer,
       clientId,
-      scopes: (import.meta.env.VITE_OAUTH_SCOPES || 'openid profile').split(' '),
-      brokerUsername: import.meta.env.VITE_BROKER_USERNAME || '',
-      brokerPassword: import.meta.env.VITE_BROKER_PASSWORD || ''
+      scopes: (import.meta.env.VITE_OAUTH_SCOPES || 'openid profile').split(' ')
     })
   }
 

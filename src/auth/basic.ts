@@ -1,5 +1,5 @@
 import { api } from '@/utils/api'
-import type { AuthProvider, BasicCredentials, LoginResult } from './types'
+import type { ApiCredentials, AuthProvider, LoginResult } from './types'
 
 const USERNAME_KEY = 'mqtt_username'
 const PASSWORD_KEY = 'mqtt_password'
@@ -41,8 +41,8 @@ export function createBasicAuthProvider(): AuthProvider {
     }
   }
 
-  const getApiCredentials = (): BasicCredentials | null =>
-    isAuthenticated ? { username, password } : null
+  const getApiCredentials = (): ApiCredentials | null =>
+    isAuthenticated ? { auth: { username, password } } : null
 
   const logout = () => {
     username = ''

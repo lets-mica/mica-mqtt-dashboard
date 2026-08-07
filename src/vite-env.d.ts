@@ -9,8 +9,6 @@ interface ImportMetaEnv {
   readonly VITE_OAUTH_ISSUER: string
   readonly VITE_OAUTH_CLIENT_ID: string
   readonly VITE_OAUTH_SCOPES: string
-  readonly VITE_BROKER_USERNAME: string
-  readonly VITE_BROKER_PASSWORD: string
 }
 
 interface ImportMeta {
