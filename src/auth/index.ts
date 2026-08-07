@@ -7,6 +7,10 @@ export * from './types'
 export function createAuthProvider(): AuthProvider {
   const mode = (import.meta.env.VITE_AUTH_MODE || 'basic') as AuthMode
 
+  if (mode !== 'basic' && mode !== 'oauth') {
+    throw new Error(`无效的认证模式: ${mode}（仅支持 basic / oauth）`)
+  }
+
   if (mode === 'oauth') {
     const issuer = import.meta.env.VITE_OAUTH_ISSUER
     const clientId = import.meta.env.VITE_OAUTH_CLIENT_ID

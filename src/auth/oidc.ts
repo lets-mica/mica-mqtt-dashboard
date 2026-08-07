@@ -3,6 +3,7 @@ import type { AuthProvider, BasicCredentials, LoginResult } from './types'
 const VERIFIER_KEY = 'mqtt_oauth_verifier'
 const STATE_KEY = 'mqtt_oauth_state'
 const TOKEN_KEY = 'mqtt_oauth_token'
+const TOKEN_EXPIRES_KEY = 'mqtt_oauth_token_expires'
 const USERNAME_KEY = 'mqtt_oauth_username'
 
 export interface OidcConfig {
@@ -63,10 +64,16 @@ export function createOidcAuthProvider(config: OidcConfig): AuthProvider {
   const init = () => {
     const storedToken = sessionStorage.getItem(TOKEN_KEY)
     const storedUsername = sessionStorage.getItem(USERNAME_KEY)
-    if (storedToken && storedUsername) {
+    const storedExpires = sessionStorage.getItem(TOKEN_EXPIRES_KEY)
+    const expired = storedExpires ? Date.now() >= Number(storedExpires) : false
+
+    if (storedToken && storedUsername && !expired) {
       token = storedToken
       username = storedUsername
       isAuthenticated = true
+    } else if (expired) {
+      // token 已过期，清理会话回登录页
+      logout()
     }
   }
 
@@ -97,11 +104,15 @@ export function createOidcAuthProvider(config: OidcConfig): AuthProvider {
     const storedState = sessionStorage.getItem(STATE_KEY)
 
     if (!code || !state || !storedState || state !== storedState) {
+      sessionStorage.removeItem(VERIFIER_KEY)
+      sessionStorage.removeItem(STATE_KEY)
       return { success: false, message: 'OAuth 回调校验失败' }
     }
 
     const verifier = sessionStorage.getItem(VERIFIER_KEY)
     if (!verifier) {
+      sessionStorage.removeItem(VERIFIER_KEY)
+      sessionStorage.removeItem(STATE_KEY)
       return { success: false, message: '缺少 code_verifier' }
     }
 
@@ -124,6 +135,9 @@ export function createOidcAuthProvider(config: OidcConfig): AuthProvider {
       }
       const tokenData = await tokenResponse.json()
       token = tokenData.access_token as string
+      if (tokenData.expires_in) {
+        sessionStorage.setItem(TOKEN_EXPIRES_KEY, String(Date.now() + Number(tokenData.expires_in) * 1000))
+      }
 
       const userResponse = await fetch(userinfoEndpoint, {
         headers: { Authorization: `Bearer ${token}` }
@@ -156,6 +170,7 @@ export function createOidcAuthProvider(config: OidcConfig): AuthProvider {
     token = ''
     username = ''
     sessionStorage.removeItem(TOKEN_KEY)
+    sessionStorage.removeItem(TOKEN_EXPIRES_KEY)
     sessionStorage.removeItem(USERNAME_KEY)
   }
 
