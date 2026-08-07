@@ -119,7 +119,7 @@ export const useDebugStore = defineStore('debug', () => {
     if (!mqttClient.value || !connected.value) return false
     
     try {
-      mqttClient.value.subscribe(topic, { qos })
+      mqttClient.value.subscribe(topic, { qos: qos as 0 | 1 | 2 })
       if (!subscriptions.value.includes(topic)) {
         subscriptions.value.push(topic)
       }
@@ -152,7 +152,7 @@ export const useDebugStore = defineStore('debug', () => {
     if (!mqttClient.value || !connected.value) return false
     
     try {
-      mqttClient.value.publish(topic, payload, { qos, retain })
+      mqttClient.value.publish(topic, payload, { qos: qos as 0 | 1 | 2, retain })
       
       // 记录发送的消息
       addMessage({

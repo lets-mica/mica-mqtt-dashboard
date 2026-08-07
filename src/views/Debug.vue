@@ -219,7 +219,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Connection, Close, Delete, Plus, Promotion } from '@element-plus/icons-vue'
 import { storeToRefs } from 'pinia'
