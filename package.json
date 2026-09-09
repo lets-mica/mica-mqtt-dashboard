@@ -41,7 +41,7 @@
     "mqtt": "^5.15.2",
     "pinia": "^4.0.3",
     "vue": "^3.5.42",
-    "vue-echarts": "^6.7.3",
+    "vue-echarts": "^8.3.0",
     "vue-router": "^5.3.1"
   },
   "devDependencies": {
