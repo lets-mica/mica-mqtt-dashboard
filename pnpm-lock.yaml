@@ -37,7 +37,7 @@ importers:
         version: 8.3.2(echarts@6.1.0)(vue@3.5.45(typescript@7.0.2))
       vue-router:
         specifier: ^5.4.0
-        version: 5.4.0(@vue/compiler-sfc@3.5.44)(pinia@4.1.0(@vue/devtools-api@8.2.1)(typescript@7.0.2)(vue@3.5.45(typescript@7.0.2)))(rolldown@1.2.18)(vite@8.3.7(@types/node@26.6.6))(vue@3.5.45(typescript@7.0.2))
+        version: 5.5.0(@vue/compiler-sfc@3.5.45)(pinia@4.1.0(@vue/devtools-api@8.2.1)(typescript@7.0.2)(vue@3.5.45(typescript@7.0.2)))(rolldown@1.2.18)(vite@8.3.7(@types/node@26.6.6))(vue@3.5.45(typescript@7.0.2))
     devDependencies:
       '@types/node':
         specifier: ^26.6.6
@@ -576,14 +576,8 @@ packages:
   '@vue/compiler-dom@3.5.45':
     resolution: {integrity: sha512-LbP2d19GSOYGPmvMBBCVJVlv7TKtjM1Cfeyu3cYia720pknZP+1cLX7H5MVatvruT6MuJhiPuNbQBW/MDn/EwA==}
 
-  '@vue/compiler-sfc@3.5.44':
-    resolution: {integrity: sha512-dzHmQ4jXTpdr5FjIQUeykVakN/uzqFbUo9/C5ikBFg3a3PeM6uRxeczx1ZbXBML0/zJstEh3ygYipzR5Z7b2Pw==}
-
   '@vue/compiler-sfc@3.5.45':
     resolution: {integrity: sha512-MKFjb2UX0M/l/jhfzqMLrI8VM4pfvFKG3pqFZkSZFHRLtNld/O4RtUPZFWSwhro/14qP88UQEkWzHxAZAQ0tsw==}
-
-  '@vue/compiler-ssr@3.5.44':
-    resolution: {integrity: sha512-xr5gb1JVHlfXJwSlRz1FeP6uxoazdzHuMTVLE7up+4Vrqxk219CvxLPxD9NXBt47yvZW7+p4DXfyp4O1fkByIA==}
 
   '@vue/compiler-ssr@3.5.45':
     resolution: {integrity: sha512-RF5sbZOfYz5AK00tOJUn2PwFXR2fS1u2HVzI8D9VF9rGAFxuGBqg2bB1kJ3ZHMprqSltXnT9MZE1IsqjSM8oew==}
@@ -1544,8 +1538,8 @@ packages:
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
 
-  vue-router@5.4.0:
-    resolution: {integrity: sha512-pFvcYcxinDHjZUlf7AzFBrT8r8Xqvv4uMHoJnjc+EqPawXQvHTkF8S4tfSmQLpriVHUGfkaKlI7Et0KRjTMTdw==}
+  vue-router@5.5.0:
+    resolution: {integrity: sha512-nYhG+YzLcrO5Z7KbH1H/xvBeBzhCWhQG0z5DYNLuaJULhavZBmEgoQ5xVHGxwe65c5hnJQHZpBxWdQhnOBzHmw==}
     peerDependencies:
       '@pinia/colada': '>=0.21.2'
       '@vue/compiler-sfc': ^3.5.34 || ^4.0.0
@@ -2015,7 +2009,7 @@ snapshots:
 
   '@vue-macros/common@3.1.4(vue@3.5.45(typescript@7.0.2))':
     dependencies:
-      '@vue/compiler-sfc': 3.5.44
+      '@vue/compiler-sfc': 3.5.45
       ast-kit: 2.2.0
       local-pkg: 1.2.1
       magic-string-ast: 1.0.3
@@ -2049,18 +2043,6 @@ snapshots:
       '@vue/compiler-core': 3.5.45
       '@vue/shared': 3.5.45
 
-  '@vue/compiler-sfc@3.5.44':
-    dependencies:
-      '@babel/parser': 7.29.12
-      '@vue/compiler-core': 3.5.44
-      '@vue/compiler-dom': 3.5.44
-      '@vue/compiler-ssr': 3.5.44
-      '@vue/shared': 3.5.44
-      estree-walker: 2.0.2
-      magic-string: 0.30.21
-      postcss: 8.5.32
-      source-map-js: 1.2.2
-
   '@vue/compiler-sfc@3.5.45':
     dependencies:
       '@babel/parser': 7.29.12
@@ -2072,11 +2054,6 @@ snapshots:
       magic-string: 0.30.21
       postcss: 8.5.32
       source-map-js: 1.2.2
-
-  '@vue/compiler-ssr@3.5.44':
-    dependencies:
-      '@vue/compiler-dom': 3.5.44
-      '@vue/shared': 3.5.44
 
   '@vue/compiler-ssr@3.5.45':
     dependencies:
@@ -3057,7 +3034,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vue-router@5.4.0(@vue/compiler-sfc@3.5.44)(pinia@4.1.0(@vue/devtools-api@8.2.1)(typescript@7.0.2)(vue@3.5.45(typescript@7.0.2)))(rolldown@1.2.18)(vite@8.3.7(@types/node@26.6.6))(vue@3.5.45(typescript@7.0.2)):
+  vue-router@5.5.0(@vue/compiler-sfc@3.5.45)(pinia@4.1.0(@vue/devtools-api@8.2.1)(typescript@7.0.2)(vue@3.5.45(typescript@7.0.2)))(rolldown@1.2.18)(vite@8.3.7(@types/node@26.6.6))(vue@3.5.45(typescript@7.0.2)):
     dependencies:
       '@vue-macros/common': 3.1.4(vue@3.5.45(typescript@7.0.2))
       '@vue/devtools-api': 8.2.1
@@ -3077,7 +3054,7 @@ snapshots:
       unplugin-utils: 0.3.2
       vue: 3.5.45(typescript@7.0.2)
     optionalDependencies:
-      '@vue/compiler-sfc': 3.5.44
+      '@vue/compiler-sfc': 3.5.45
       pinia: 4.1.0(@vue/devtools-api@8.2.1)(typescript@7.0.2)(vue@3.5.45(typescript@7.0.2))
       vite: 8.3.7(@types/node@26.6.6)
     transitivePeerDependencies:
